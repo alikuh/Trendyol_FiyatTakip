@@ -1,16 +1,14 @@
 import tkinter as tk
 from selenium_file import FiyatTakip
 from tkinter import messagebox
-import threading
-fiyat = ""
 
+fiyat = ""
 
 try:
     Global_bot = FiyatTakip()
 except Exception as e:
-    # Başlatma hatasını burada yakalamak iyidir.
     print(f"Kritik Hata: Fiyat Takip Botu başlatılamadı! {e}")
-    GLOBAL_BOT_INSTANCE = None
+    Global_bot = None
 
 # ----------- SELENIUM BAŞLATAN FONKSİYON -------------
 def kontrol_baslat():
@@ -25,7 +23,7 @@ def kontrol_baslat():
 
     try:
         alinan_fiyat = Global_bot.go_link(link)
-        if alinan_fiyat:
+        if alinan_fiyat is not None:
             label2.configure(text=f"✅ Fiyat: {alinan_fiyat}", fg="green")
         else:
             label2.configure(text="❌ Fiyat Bulunamadı", fg="orange")
@@ -44,6 +42,7 @@ def kontrol():
 
 # ----------- ANA PENCERE VE AYARLAR -------------
 window = tk.Tk()
+
 window.title("🛍️ Trendyol Fiyat Takip Uygulaması")
 window.geometry("700x400")
 window.config(padx=50, pady=50)
@@ -78,7 +77,15 @@ button_baslat.grid(row=1, column=1, padx=(20, 0), pady=10, ipady=5, sticky="E")
 label2 = tk.Label(window,text=fiyat, font=("Arial", 12, "bold"))
 label2.grid(row=2, column=0, columnspan=2, pady=(0, 10), sticky="W")
 
+# ----------- Analiz Paneli  -------------
+
+
+
+
+
+
 button2 = tk.Button(window,command=kontrol)
 button2.grid(row=3, column=0, pady=10, ipady=5, sticky="E")
+
 
 window.mainloop()
