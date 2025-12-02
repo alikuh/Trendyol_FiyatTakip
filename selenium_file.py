@@ -1,3 +1,4 @@
+
 import selenium
 from selenium import webdriver
 import time
@@ -9,13 +10,17 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import NoSuchElementException
-
+##############################################3
+import smtplib
+from email.message import EmailMessage
 
 
 
 class FiyatTakip:
     def __init__(self):
         self.driver= None
+        self.durum = False
+        self.fiyat = None
 
     def setup_driver(self):
         chrome_secenekleri = Options()
@@ -38,6 +43,7 @@ class FiyatTakip:
             return None
 
     def go_link(self, link):
+        self.durum = False
         if self.driver is None:
             self.setup_driver()
         try:
@@ -64,9 +70,9 @@ class FiyatTakip:
             print("Pop-up çıkmadı veya kapatılamadı (Önemli değil).")
 
         list_ClassName = [
-            (By.CLASS_NAME,"discounted"),
-            (By.CLASS_NAME,"new-price"),
-            (By.CLASS_NAME,"ty-plus-price-discounted-price"),
+            (By.CLASS_NAME, "discounted"),
+            (By.CLASS_NAME, "ty-plus-price-discounted-price"),
+            (By.CLASS_NAME,"new-price")
         ]
 
         ham_fiyat = None
@@ -83,7 +89,10 @@ class FiyatTakip:
                 continue
 
         if ham_fiyat:
-            return self.fiyat_temizle(ham_fiyat)
+            self.durum = True
+            temizlenen_veri = self.fiyat_temizle(ham_fiyat)
+            self.fiyat = temizlenen_veri
+            return self.fiyat
         else:
             print("HATA: Hiçbir yöntemle fiyat bulunamadı. Sayfa yapısı değişmiş olabilir.")
             return None
@@ -92,8 +101,46 @@ class FiyatTakip:
         if self.driver:
             self.driver.quit()
 
-    def fiyat_analiz(self):
-        print(self.temiz)
+    def send_mail(self,email,konu,icerik,sifre):
+        try:
+            print("Mail sunucusuna bağlanılıyor...")
+
+            # 1. E-posta Taslağını Hazırla
+            msg = EmailMessage()
+            msg['Subject'] = konu
+            msg['From'] = email
+            msg['To'] = email
+            msg.set_content(icerik)
+
+            # 2. Gmail Sunucusuna Bağlan (Port 587: TLS Güvenliği)
+            server = smtplib.SMTP('smtp.gmail.com', 587)
+            server.starttls()  # Bağlantıyı şifrele (Güvenlik kilidi)
+
+            # 3. Giriş Yap
+            server.login(email, sifre )
+
+            # 4. Gönder
+            server.send_message(msg)
+            print(f"✅ Mail başarıyla gönderildi: {email}")
+
+            # 5. Bağlantıyı Kapat
+            server.quit()
+            return True
+
+        except Exception as e:
+            print(f"❌ Mail Gönderme Hatası: {e}")
+            return False
+
+    def fiyat_analiz(self,email,hedef_fiyat,sifre):
+        if self.fiyat is not None:
+            konu = "Fiyat Takip Sistemi"
+            icerik = f"Fiyatta Değişiklik var şuanki fiyat : {self.fiyat} TL"
+            password = sifre
+            e_mail = email
+            if hedef_fiyat >= self.fiyat:
+                self.send_mail(e_mail,konu,icerik,password)
+
+
 
 
 
