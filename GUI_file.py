@@ -90,11 +90,10 @@ def kontrol():
 # ----------- ANA PENCERE VE AYARLAR -------------
 window = tk.Tk()
 window.title("🛍️ Trendyol Fiyat Takip Sistemi")
-window.geometry("650x800")
+window.geometry("650x790")
 window.configure(bg="#ecf0f1")
 window.resizable(False, False)
 
-# Başlık Frame
 header_frame = tk.Frame(window, bg="#3498db", height=80)
 header_frame.pack(fill="x")
 
@@ -107,11 +106,9 @@ label_baslik = tk.Label(
 )
 label_baslik.pack(pady=20)
 
-# Ana İçerik Frame
 main_frame = tk.Frame(window, bg="#ecf0f1")
 main_frame.pack(pady=20, padx=30, fill="both", expand=True)
 
-# Link Girme Bölümü
 link_frame = tk.LabelFrame(
     main_frame,
     text="📌 Ürün Linki",
@@ -142,7 +139,7 @@ entry_link.pack(fill="x", ipady=8, pady=(0, 10))
 
 button_baslat = tk.Button(
     link_frame,
-    text="✅ Takibi Başlat",
+    text="✅ Ürün Takibi Başlat",
     command=kontrol_baslat,
     bg="#27ae60",
     fg="white",
@@ -154,7 +151,6 @@ button_baslat = tk.Button(
 )
 button_baslat.pack()
 
-# Durum Label
 label_durum = tk.Label(
     main_frame,
     text="",
@@ -174,7 +170,6 @@ analiz_frame = tk.LabelFrame(
     pady=20
 )
 
-# Hedef Fiyat
 hedef_frame = tk.Frame(analiz_frame, bg="#ecf0f1")
 hedef_frame.pack(fill="x", pady=10)
 
@@ -220,7 +215,6 @@ entry_email = tk.Entry(
 )
 entry_email.pack(side="left", fill="x", expand=True, ipady=5)
 
-# Güvenlik Şifresi
 sifre_frame = tk.Frame(analiz_frame, bg="#ecf0f1")
 sifre_frame.pack(fill="x", pady=10)
 
@@ -244,7 +238,6 @@ entry_guvenlik_password = tk.Entry(
 )
 entry_guvenlik_password.pack(side="left", fill="x", expand=True, ipady=5)
 
-# Bilgi Notu
 bilgi_label = tk.Label(
     analiz_frame,
     text="ℹ️ Ürün fiyatı hedef fiyata ulaştığında e-mail adresinize bildirim gönderilecektir.",
@@ -256,7 +249,6 @@ bilgi_label = tk.Label(
 )
 bilgi_label.pack(pady=(15, 10))
 
-# Takip Başlat Butonu
 button_takip = tk.Button(
     analiz_frame,
     text="🚀 Takip Motorunu Başlat",
@@ -289,7 +281,7 @@ analiz_frame.place_forget()
 # Footer
 footer_label = tk.Label(
     window,
-    text="© 2024 Trendyol Fiyat Takip Sistemi | Geliştirildi ❤️ ile",
+    text="© 2025 Trendyol Fiyat Takip Sistemi | Geliştirilci : ALİ KUH ",
     font=("Segoe UI", 9),
     bg="#ecf0f1",
     fg="#95a5a6"

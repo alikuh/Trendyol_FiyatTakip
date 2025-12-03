@@ -24,7 +24,7 @@ class FiyatTakip:
 
     def setup_driver(self):
         chrome_secenekleri = Options()
-        #chrome_secenekleri.add_argument("--headless")
+        chrome_secenekleri.add_argument("--headless")   # Bu satır chrome sayfası işlemleri yaparken gizlenmesini sağlar
         chrome_secenekleri.add_argument("--start-maximized")
         chrome_secenekleri.add_argument("--disable-notifications")
         chrome_secenekleri.add_argument(
@@ -53,19 +53,20 @@ class FiyatTakip:
             self.driver.get(link)
         wait_ten_sn = WebDriverWait(self.driver, 10)
         wait_two_sn = WebDriverWait(self.driver, 2)
-        # --- ADIM 1: POP-UP KAPATMA OPERASYONU ---
+
+        # --- Ekrandaki pop-up ları kapatma ---
         try:
             popup_kapat = wait_ten_sn.until(EC.element_to_be_clickable((By.ID, "onetrust-reject-all-handler")))
             popup_kapat.click()
-            print("Pop-up belası kapatıldı.")
+            print("1. Pop-up belası kapatıldı.")
             time.sleep(1)
             try:
                 popup_kapat2 = wait_two_sn.until(EC.element_to_be_clickable((By.CLASS_NAME,"onboarding__default-renderer-primary-button")))
                 popup_kapat2.click()
-                print("Pop-up 2 belası kapatıldı.")
+                print("2. Pop-up belası kapatıldı.")
                 time.sleep(1)
             except:
-                print("Pop-up 2 kapatılamadı ya da bulunamadı")
+                print("2. Pop-up kapatılamadı ya da bulunamadı")
         except:
             print("Pop-up çıkmadı veya kapatılamadı (Önemli değil).")
 
@@ -105,25 +106,20 @@ class FiyatTakip:
         try:
             print("Mail sunucusuna bağlanılıyor...")
 
-            # 1. E-posta Taslağını Hazırla
             msg = EmailMessage()
             msg['Subject'] = konu
             msg['From'] = email
             msg['To'] = email
             msg.set_content(icerik)
 
-            # 2. Gmail Sunucusuna Bağlan (Port 587: TLS Güvenliği)
             server = smtplib.SMTP('smtp.gmail.com', 587)
-            server.starttls()  # Bağlantıyı şifrele (Güvenlik kilidi)
+            server.starttls()
 
-            # 3. Giriş Yap
             server.login(email, sifre )
 
-            # 4. Gönder
             server.send_message(msg)
             print(f"✅ Mail başarıyla gönderildi: {email}")
 
-            # 5. Bağlantıyı Kapat
             server.quit()
             return True
 
