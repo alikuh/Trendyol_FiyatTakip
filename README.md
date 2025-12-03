@@ -7,8 +7,8 @@
 Bu proje, Trendyol üzerindeki seçtiğiniz ürünlerin fiyatını otomatik olarak takip eden ve belirlediğiniz hedef fiyatın altına düştüğünde size **E-Posta** yoluyla bildirim gönderen bir masaüstü otomasyon uygulamasıdır.
 
 <p align="center">
-  <img src="ekran1.png" width="45%" alt="Ana Ekran">
-  <img src="ekran2.png" width="45%" alt="Takip Ekranı">
+  <img src="ekran0.png" width="45%" alt="Ana Ekran">
+  <img src="ekran1.png" width="45%" alt="Takip Ekranı">
 </p>
 
 ## 🌟 Özellikler
