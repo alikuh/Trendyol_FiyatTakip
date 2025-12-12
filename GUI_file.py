@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox, ttk
 from selenium_file import FiyatTakip
 import time
+import threading
 
 global durum
 takip_ediliyor = False
@@ -15,8 +16,6 @@ except Exception as e:
 
 # ----------- SELENIUM BAŞLATAN FONKSİYON -------------
 def kontrol_baslat():
-    global durum
-    durum = False
     link = entry_link.get()
     if not link.startswith("http"):
         messagebox.showerror("Hata", "Lütfen geçerli bir bağlantı (URL) giriniz.")
@@ -27,6 +26,14 @@ def kontrol_baslat():
     button_baslat.configure(state="disabled")
     window.update()
 
+    t = threading.Thread(target=fiyat_cekme_islemi, args=(link,))
+    t.start()
+
+
+# ----------- THREAD Fonksiyonu -------------
+def fiyat_cekme_islemi(link):
+    global durum
+    durum = False
     try:
         alinan_fiyat = Global_bot.go_link(link)
         if alinan_fiyat is not None:
@@ -42,7 +49,8 @@ def kontrol_baslat():
 
     button_baslat.configure(state="normal")
 
-# ----------- Kontrol DURDURMA FONKSİYON -------------
+
+# ----------- KONTROL DURDURMA FONKSİYON -------------
 def durdur():
     global takip_ediliyor
     takip_ediliyor = False  # Döngüyü kırar
